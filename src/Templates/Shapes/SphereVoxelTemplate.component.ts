@@ -4,25 +4,20 @@ import { SphereVoxelTemplate } from "@divinevoxel/vlox/Templates/Shapes/SphereVo
 export const SphereVoxelTemplateComponent = NCS.registerComponent({
   type: "sphere-voxel-template",
   schema: NCS.schema({
-    radiusX: NCS.property(5),
-    radiusY: NCS.property(5),
-    radiusZ: NCS.property(5),
+    radius: NCS.property(5),
   }),
   init(component) {
     const provider = VoxelShapeTemplateProvider.getRequired(component.node);
     const template = new SphereVoxelTemplate(
       SphereVoxelTemplate.CreateNew({
-        radiusX: component.schema.radiusX,
-        radiusY: component.schema.radiusY,
-        radiusZ: component.schema.radiusZ,
+        radius: component.schema.radius,
+
       })
     );
     provider.data = template;
     const cursor = component.schema.getCursor();
     const index = component.schema.getSchemaIndex();
-    cursor.setProxy(index.radiusX, template, "radiusX");
-    cursor.setProxy(index.radiusY, template, "radiusY");
-    cursor.setProxy(index.radiusZ, template, "radiusZ");
+    cursor.setProxy(index.radius, template, "radius");
   },
   dispose(component) {
     const provider = VoxelShapeTemplateProvider.get(component.node);
