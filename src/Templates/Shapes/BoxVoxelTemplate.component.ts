@@ -4,7 +4,9 @@ import { BoxVoxelTemplate } from "@divinevoxel/vlox/Templates/Shapes/BoxVoxelTem
 export const BoxVoxelTemplateComponent = NCS.registerComponent({
   type: "box-voxel-template",
   schema: NCS.schema({
-    width: NCS.property(5),
+    width: NCS.property(5, {
+      data: {},
+    }),
     height: NCS.property(5),
     depth: NCS.property(5),
   }),
