@@ -47,12 +47,11 @@ export const SceneOptionsComponent = NCS.registerComponent({
 
   init(component) {
     const { renderer } = BabylonContext.getRequired(component.node).data;
-    const options = renderer.voxelScene.options;
+    const options = renderer.sceneOptions;
 
     const index = component.schema.getSchemaIndex();
     const cursor = component.schema.getCursor();
 
-    console.warn(index, index.shade.doSun, options.shade.doSun, options.shade);
     // Setting proxies for each property individually
     cursor.setProxy(index.shade.doSun, options.shade, "doSun");
     cursor.setProxy(index.shade.doRGB, options.shade, "doRGB");
