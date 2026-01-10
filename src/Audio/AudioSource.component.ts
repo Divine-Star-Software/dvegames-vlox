@@ -35,5 +35,5 @@ export const AudioSourceComponent = NCS.registerComponent({
   }),
   data: NCS.data<Data>(),
   init: (component) => (component.data = new Data(component.cloneCursor())),
-  dispose: (component) => component.data.component.returnCursor(),
+  dispose: (component) => component.data?.component?.returnCursor(),
 });

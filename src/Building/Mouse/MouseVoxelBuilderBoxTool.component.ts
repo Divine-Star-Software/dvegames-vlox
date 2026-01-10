@@ -10,7 +10,7 @@ import { PointerEventTypes } from "@babylonjs/core/Events/pointerEvents";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 import { Observable } from "@amodx/core/Observers";
 import { BabylonContext } from "../../Babylon/Babylon.context";
-import { VoxelBoxSelection } from "@divinevoxel/vlox/Templates/Selection/VoxelBoxSelection";
+import { VoxelBoundsSelection } from "@divinevoxel/vlox/Templates/Selection/VoxelBoundsSelection";
 import { PaintVoxelData } from "@divinevoxel/vlox/Voxels";
 import { VoxelPaintDataComponent } from "../../Voxels/VoxelPaintData.component";
 import { VoxelUpdateProviderComponent } from "../../Providers/VoxelUpdateProvider.component";
@@ -29,7 +29,7 @@ export const MouseVoxelBuilderBoxToolComponent = NCS.registerComponent({
     const paintData = VoxelPaintDataComponent.getRequired(component.node);
     const { scene } = BabylonContext.getRequired(component.node).data;
 
-    const selection = new VoxelBoxSelection();
+    const selection = new VoxelBoundsSelection();
     let enabled = false;
     const canceled = new Observable();
 

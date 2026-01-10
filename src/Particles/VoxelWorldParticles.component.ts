@@ -1,8 +1,8 @@
 import { NCS } from "@amodx/ncs";
 import { BabylonContext } from "../Babylon/Babylon.context";
-import { SchemaRegister } from "@divinevoxel/vlox/Voxels/State/SchemaRegister";
+import { VoxelSchemas } from "@divinevoxel/vlox/Voxels/State/VoxelSchemas";
 import { VoxelPropertiesRegister } from "@divinevoxel/vlox/Voxels/Data/VoxelPropertiesRegister";
-import { VoxelPalettesRegister } from "@divinevoxel/vlox/Voxels/Data/VoxelPalettesRegister";
+import { VoxelLUT } from "@divinevoxel/vlox/Voxels/Data/VoxelLUT";
 import { TextureManager } from "@divinevoxel/vlox/Textures/TextureManager";
 import { VoxelExplodeParticles } from "@divinevoxel/vlox-babylon/Particles/VoxelExplodeParticles";
 import { Scene } from "@babylonjs/core/scene";
@@ -17,15 +17,14 @@ class Data {
     mod: number
   ) {
     if (typeof voxelId == "number")
-      voxelId = VoxelPalettesRegister.voxelIds.getStringId(
-        VoxelPalettesRegister.voxels[voxelId][0]
-      );
-    const modState = SchemaRegister.getVoxelSchemas(voxelId)!
-      .mod.startEncoding(mod)
+      voxelId = VoxelLUT.voxelIds.getStringId(VoxelLUT.voxels[voxelId][0]);
+    const modState = VoxelSchemas.mod
+      .get(voxelId)!
+      .startEncoding(mod)
       .toStateString();
     const particles =
       VoxelPropertiesRegister.VoxelProperties[
-        VoxelPalettesRegister.voxelIds.getNumberId(voxelId)
+        VoxelLUT.voxelIds.getNumberId(voxelId)
       ]["dve_particle_data"];
     if (!particles) {
       console.warn("No particle data for:", voxelId);

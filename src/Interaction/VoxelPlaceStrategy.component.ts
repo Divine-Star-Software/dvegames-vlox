@@ -1,7 +1,7 @@
 import { NCS } from "@amodx/ncs/";
 import { VoxelPlacingStrategyRegister } from "@divinevoxel/vlox/Voxels/Interaction/Placing/VoxelPlacingStrategyRegister";
 import { PaintVoxelData } from "@divinevoxel/vlox/Voxels/Types/PaintVoxelData";
-import { SchemaRegister } from "@divinevoxel/vlox/Voxels/State/SchemaRegister";
+import { VoxelSchemas } from "@divinevoxel/vlox/Voxels/State/VoxelSchemas";
 import { VoxelPickResult } from "@divinevoxel/vlox/Voxels/Interaction/VoxelPickResult";
 class Data {
   getState(
@@ -17,8 +17,8 @@ class Data {
       return data;
     }
 
-    const schema = SchemaRegister.getVoxelSchemas(data.id);
-    data.state = schema.state.readString(state);
+    const schema = VoxelSchemas.getStateSchema(data.id)!;
+    data.state = schema.readString(state);
   }
 }
 
