@@ -17,7 +17,7 @@ class Data {
     mod: number
   ) {
     if (typeof voxelId == "number")
-      voxelId = VoxelLUT.voxelIds.getStringId(VoxelLUT.voxels[voxelId][0]);
+      voxelId = VoxelLUT.voxelIds.getStringId(VoxelLUT.voxelIdToTrueId[voxelId]);
     const modState = VoxelSchemas.mod
       .get(voxelId)!
       .startEncoding(mod)

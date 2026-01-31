@@ -18,7 +18,7 @@ class Data {
     return this._data.camera;
   }
   constructor(
-    private _data: (typeof CameraProviderComponent)["default"]["data"]
+    private _data: (typeof CameraProviderComponent)["default"]["data"],
   ) {}
 
   private get2dDirection(vector: Vector3) {
@@ -26,7 +26,7 @@ class Data {
     vector.normalize();
 
     return Directions.FromVector(
-      Vector2Like.Create(Math.round(vector.x), Math.round(vector.z))
+      Vector2Like.Create(Math.round(vector.x), Math.round(vector.z)),
     );
   }
 
@@ -62,12 +62,12 @@ class Data {
     this.forwardRay.origin.set(
       this.camera.globalPosition.x,
       this.camera.globalPosition.y,
-      this.camera.globalPosition.z
+      this.camera.globalPosition.z,
     );
     this.forwardRay.direction.set(
       forwardDirection.x,
       forwardDirection.y,
-      forwardDirection.z
+      forwardDirection.z,
     );
   }
 }
@@ -77,10 +77,13 @@ export const CameraDirectionComponent = NCS.registerComponent({
   data: NCS.data<Data>(),
   init(component) {
     const cameraComponent = CameraProviderComponent.getRequired(
-      component.node
+      component.node,
     )!;
     const data = new Data(cameraComponent.data);
     component.data = data;
+    component.data._cleanUp = () => {
+      cameraComponent.returnCursor();
+    };
   },
   update(component) {
     component.data.update();
