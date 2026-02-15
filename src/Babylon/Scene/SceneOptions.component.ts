@@ -70,7 +70,7 @@ export const SceneOptionsComponent = NCS.registerComponent({
     cursor.setProxy(index.fog.color.r, options.fog.color, "r");
     cursor.setProxy(index.fog.color.g, options.fog.color, "g");
     cursor.setProxy(index.fog.color.b, options.fog.color, "b");
-    cursor.setProxy(index.fog.startBlend, options.fog, "start");
+    cursor.setProxy(index.fog.startBlend, options.fog, "density");
     cursor.setProxy(index.fog.blendEnd, options.fog, "end");
 
     cursor.setProxy(index.sky.horizon, options.sky, "horizon");
