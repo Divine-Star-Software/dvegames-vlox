@@ -5,10 +5,13 @@ export const SelfDestructComponent = NCS.registerComponent({
     time: NCS.property(0),
   }),
   data: NCS.data<number>(),
-  init: (component) => (component.data = performance.now()),
-  update(component) {
-    const delta = performance.now() - component.data;
-    if (delta >= component.schema.time) {
+  performance: {
+    useReusableCursor: true,
+  },
+  init: (component) => (component.data = component.schema.time),
+  update(component, clock) {
+    component.data -= clock.delta;
+    if (component.data <= 0) {
       component.node.dispose();
     }
   },

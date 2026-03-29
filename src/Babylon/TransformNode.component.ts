@@ -11,20 +11,20 @@ import { BabylonContext } from "./Babylon.context";
 
 class Data {
   transformNode: TransformNode;
-  constructor(public component: (typeof TransformNodeComponent)["default"]) {}
   getWorldPosition() {
-    return this.component.data.transformNode.getAbsolutePosition();
+    return this.transformNode.getAbsolutePosition();
   }
+
+  private traverse = (node: BabylonNode) => {
+    node.computeWorldMatrix();
+    for (const child of node.getChildren()) {
+      this.traverse(child);
+    }
+  };
   parent(node: BabylonNode) {
     if (!node) return;
-    node.parent = this.component.data.transformNode;
-    const traverse = (node: BabylonNode) => {
-      node.computeWorldMatrix();
-      for (const child of node.getChildren()) {
-        traverse(child);
-      }
-    };
-    traverse(node);
+    node.parent = this.transformNode;
+    this.traverse(node);
   }
 }
 
@@ -34,13 +34,18 @@ export const TransformNodeComponent = NCS.registerComponent({
     mode: NCS.property(""),
   }),
   data: NCS.data<Data>(),
+  performance: {
+    useReusableCursor: true,
+  },
   init(component) {
-    component.data = new Data(component.cloneCursor());
-    const context = BabylonContext.getRequired(component.node).data;
-    const transformNode = new TransformNode(
-      `transform-component-${component.node.index}`,
-      context.scene
-    );
+    component.data = component.dataPool.get() ?? new Data();
+
+    const context = BabylonContext.getRequired(component.node);
+    let transformNode =
+      component.data.transformNode ??
+      new TransformNode(component.node.name, context.data.scene);
+    transformNode.setEnabled(true);
+    context.returnCursor();
     component.data.transformNode = transformNode;
     const tranform = TransformComponent.getRequired(component.node);
     Vector3Like.Copy(transformNode.position, tranform.schema.position);
@@ -52,7 +57,7 @@ export const TransformNodeComponent = NCS.registerComponent({
         tranform,
         transformNode.position,
         transformNode.rotation,
-        transformNode.scaling
+        transformNode.scaling,
       );
     }
     if (component.schema.mode == "sync") {
@@ -72,7 +77,7 @@ export const TransformNodeComponent = NCS.registerComponent({
     for (let i = 0; i < children.length; i++) {
       children[i].parent = null;
     }
-    component.data.transformNode.dispose();
-    component.data.component.returnCursor();
+    component.data.transformNode.setEnabled(false);
+    component.dataPool.addItem(component.data);
   },
 });

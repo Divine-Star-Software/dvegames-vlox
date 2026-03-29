@@ -18,7 +18,7 @@ const options3D: SFXPlayOptions = {
   },
 };
 class Data {
-  constructor(public component: (typeof AudioSourceComponent)["default"]) {}
+  public component: (typeof AudioSourceComponent)["default"];
   play() {
     const transform = TransformComponent.get(this.component.node)!;
     if (transform) {
@@ -32,7 +32,7 @@ class Data {
       transform.returnCursor();
     } else {
       options.level = this.component.schema.level;
-      Audio.sfx.play("place", options);
+      Audio.sfx.play(this.component.schema.sfxId, options);
     }
   }
 }
@@ -45,6 +45,13 @@ export const AudioSourceComponent = NCS.registerComponent({
     rolloffFactor: NCS.property(0),
   }),
   data: NCS.data<Data>(),
-  init: (component) => (component.data = new Data(component.cloneCursor())),
-  dispose: (component) => component.data?.component?.returnCursor(),
+  init: (component) => {
+    component.data = component.dataPool.get() ?? new Data();
+    component.data.component = component;
+  },
+  dispose: (component) => {
+    if (!component.data) return;
+    component.data?.component?.returnCursor();
+    component.dataPool.addItem(component.data);
+  },
 });

@@ -25,10 +25,9 @@ export const SceneOptionsComponent = NCS.registerComponent({
         { r: 1, g: 1, b: 1 },
         {
           type: "color-3",
-        }
+        },
       ),
-      startBlend: NCS.property(0),
-      blendEnd: NCS.property(0),
+      distance: NCS.property(0),
     }),
     sky: NCS.property({
       horizon: NCS.property(0),
@@ -38,7 +37,7 @@ export const SceneOptionsComponent = NCS.registerComponent({
         { r: 1, g: 1, b: 1 },
         {
           type: "color-3",
-        }
+        },
       ),
       blendStart: NCS.property(0),
       blendEnd: NCS.property(0),
@@ -65,13 +64,12 @@ export const SceneOptionsComponent = NCS.registerComponent({
 
     cursor.setProxy(index.fog.mode, options.fog, "mode");
     cursor.setProxy(index.fog.density, options.fog, "density");
+    cursor.setProxy(index.fog.distance, options.fog, "distance");
     cursor.setProxy(index.fog.heightFactor, options.fog, "heightFactor");
 
     cursor.setProxy(index.fog.color.r, options.fog.color, "r");
     cursor.setProxy(index.fog.color.g, options.fog.color, "g");
     cursor.setProxy(index.fog.color.b, options.fog.color, "b");
-    cursor.setProxy(index.fog.startBlend, options.fog, "density");
-    cursor.setProxy(index.fog.blendEnd, options.fog, "end");
 
     cursor.setProxy(index.sky.horizon, options.sky, "horizon");
     cursor.setProxy(index.sky.horizonStart, options.sky, "horizonStart");
